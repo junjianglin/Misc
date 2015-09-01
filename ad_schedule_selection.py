@@ -18,7 +18,7 @@ class Area():
 			for i in range(content.length):
 				self.w[wait][start+i] = (start+i,content)
 		else:
-			print content," can not override existing content"
+			print content,"can not override existing content"
 
 	def checkAddContent(self,wait,start,content):
 		"""return True if the waiting_area can hold content
@@ -29,6 +29,10 @@ class Area():
 			elif self.w[wait][start+i] != None:
 				return False
 		return True
+
+	def delContent(self,wait,start,content):
+		for i in range(content.length):
+			self.w[wait][start+i] = None
 
 	def printSchedule(self):
 		self.printWaiting()
@@ -177,7 +181,7 @@ class Schedule_solution():
 		for i in range(len(areas)):
 			while True:
 				schedule = self.randomSchedule(contents)
-				if self.validSchedule(schedule):
+				if self.validSchedule(schedule)[0]:
 					schedule.id = "area" + str(i+1)
 					solutions.append(schedule)
 					break
@@ -255,13 +259,13 @@ class Schedule_solution():
 				c = schedule.w[i][j]
 				if c != None:
 					if not validRowCol(c,j,schedule.w[i],schedule):
-						return False
+						return False,(c,i)
 					else:
 						j += c[1].length
 				else:
 					j += 1
 			i += 1
-		return True
+		return True,None
 	
 	def schedule_localSearch(self,contents,areas):
 		""" local greedy search
@@ -270,7 +274,73 @@ class Schedule_solution():
 			  with other random content, check whether it is valid 
 			  again, until we get a valid one
 		"""
-		pass	
+		solutions = []
+		for i in range(len(areas)):
+			schedule = self.randomSchedule(contents)
+			count = 0
+			while True:
+				if self.validSchedule(schedule)[0]:
+					schedule.id = "area"+str(i+1)
+					solutions.append(schedule)
+					count = 0
+					break
+				else:
+					schedule = self.transition(schedule)
+					count += 1
+					if count > 10:
+						count = 0
+						schedule = self.randomSchedule(contents)
+		for sol in solutions:
+			sol.printSchedule()
+	
+	def transition(self,schedule):
+		""" use validSchedule to find the problematic content, 
+			and switch it with another random content
+		"""
+		c_p = self.validSchedule(schedule)[1]
+		row = c_p[1]
+		start = c_p[0][0]
+		c = c_p[0][1]
+		space = c.length
+		start_new = start
+		for i in range(19):
+			try:
+				if schedule.w[row][start-i-1] == None:
+					space += 1
+					start_new -= 1
+				else:
+					break
+			except IndexError:
+				break
+		for i in range(19):
+			try:
+				if schedule.w[row][start+i+1] == None:
+					space += 1
+				else:
+					break
+			except IndexError:
+				break
+
+		for i in range(len(schedule.w)):
+			j = 0
+			while j < len(schedule.w[i]) and (j<start or j>start+c.length):
+				if schedule.w[i][j] != None and schedule.w[i][j][1].length\
+				   <=space and schedule.w[i][j][1].id!=c.id\
+				   and c.length<=schedule.w[i][j][1].length:
+					temp = i,j,schedule.w[i][j][1]
+					schedule.delContent(temp[0],temp[1],temp[2])
+					#print "add,",c
+					schedule.addContent(temp[0],temp[1],c)
+					schedule.delContent(row,start,c)
+					#print "add,",temp[2]
+					schedule.addContent(row,start_new,temp[2])
+				elif schedule.w[i][j] == None:
+					j += 1
+				else:
+					j += schedule.w[i][j][1].length
+		return schedule
+
+				
 def mainSelection():
 	import timeit
 	c1 = Content(1,4,20)
@@ -345,9 +415,13 @@ def mainSchedule():
 	time_r = timeit.default_timer()
 	schedule_sols = sol_schedule.schedule_randomSampling(contents,areas)
 	print "running time,",timeit.default_timer()-time_r
+	print "local search schedule:"
+	time_l = timeit.default_timer()
+	schedule_sols_local = sol_schedule.schedule_localSearch(contents,areas)
+	print "running time,",timeit.default_timer()-time_l
 	sol_selection = Selection_solution()
-	#sol_selection.select_bruteforce(4,schedule_sols[0],schedule_sols[1],schedule_sols[2])
-	sol_selection.select_bruteforce(4,*schedule_sols)     #argument unpacking
+	#sol_selection.select_bruteforce(4,*schedule_sols)     #argument unpacking
+
 if __name__ == '__main__':
 	#mainSelection()
 	mainSchedule()
