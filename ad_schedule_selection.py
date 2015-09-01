@@ -1,57 +1,58 @@
 # Online ad scheduling problem, selection part, details please see the group interview guide.
 
 class Area():
+	"""
+	Attributes:
+		weight: the multiplier of this area
+		id: unique id
+		w: content candidates, a list with 3 lists
+	"""
 	def __init__(self,id,weight):
 		self.weight = weight
 		self.id = id
-		self.w1 = [None]*20
-		self.w2 = [None]*20
-		self.w3 = [None]*20
+		#this design is not suitable, store w1,w2,w3 in a list called wait
+		self.w = [[None]*20 for _ in range(3)]
 	
-	def updateWaiting(self,w1,w2,w3):
-		self.w1 = w1
-		self.w2 = w2
-		self.w3 = w3
+	def addContent(self,wait,start,content):
+		if self.checkAddContent(wait,start,content):
+			for i in range(content.length):
+				self.w[wait][start+i] = (start+i,content)
+		else:
+			print content," can not override existing content"
 
-	def addContent(self,waiting_area,start,content):
-		w = getattr(self,waiting_area)
-		for i in range(content.length):
-			if w[start+i] != None:
-				print content," can not overrite,",w[start+i]
-			else:
-				w[start+i] = (start+i,content)
-	def checkAddContent(self,waiting_area,start,content):
+	def checkAddContent(self,wait,start,content):
 		"""return True if the waiting_area can hold content
 		"""
-		w = getattr(self,waiting_area)
 		for i in range(content.length):
 			if start+i > 19:
 				return False
-			elif w[start+i] != None:
+			elif self.w[wait][start+i] != None:
 				return False
 		return True
 
 	def printSchedule(self):
-		self.printWaiting('w1')
-		self.printWaiting('w2')
-		self.printWaiting('w3')
+		self.printWaiting()
 		print ' '.join(map(format,range(20),['2' for _ in\
 						range(20)]))
 		print ""
-	def printWaiting(self,wait):
-		w_print=""
-		w = getattr(self,wait)
-		for c in w:
-			if c:
-				w_print += str(c[1])
-			else:
-				w_print += 'No'
-			w_print += " "
-		print w_print
+
+	def printWaiting(self):
+		for wait in self.w:
+			w_print=""
+			for c in wait:
+				if c:
+					w_print += str(c[1])
+				else:
+					w_print += 'NO'
+				w_print += " "
+			print w_print
+	
 	def __cmp__(self,o):
 		return cmp(self.weight,o.weight)
+	
 	def __repr__(self):
 		return self.id
+
 class Content():
 	def __init__(self,id,length,value):
 		self.id = id
@@ -63,12 +64,15 @@ class Content():
 			return cmp(self.value,o.value)
 		else:
 			return cmp(self.value,0)
+	
 	def __eq__(self,other):
 		if other != None:
-			return self.id==other.id and self.length == other.length\
-					and self.value==other.value
+			return self.id==other.id and \
+				   self.length == other.length and \
+				   self.value==other.value
 		else:
 			return False
+	
 	def __repr__(self):
 		return 'c'+str(self.id)
 
@@ -87,11 +91,9 @@ class Selection_solution():
 		areas.append(a1)
 		areas.append(a2)
 		areas.extend(args)
-		candidates = [[x.w1[time][1] if x.w1[time]!=None else None\
-					  ,x.w2[time][1] if x.w2[time]!=None else None\
-					  ,x.w3[time][1] if x.w3[time]!=None else None]\
-					   for x in areas]
-		weights = [x.weight for x in areas]
+		candidates = [[wait[time][1] if wait[time]!=None else None \
+					  for wait in area.w] for area in areas]
+		weights = [area.weight for area in areas]
 		input = (candidates,weights)
 		best = [None]*len(candidates)
 		a = [-1]*len(areas)
@@ -128,6 +130,7 @@ class Selection_solution():
 			for i in range(ncandidates):
 				a[k] = c[i]
 				self.backtrack(a,k,input,best)
+	
 	def select_greedy(self,time,a1,a2,*args):
 		"""greedy algorithm, take the most weight area first, and
 		   give it most valuable content, then second area, and 
@@ -145,10 +148,8 @@ class Selection_solution():
 		areas_sorted = sorted(areas,cmp=lambda x,y:\
 						cmp(y.weight,x.weight))
 		result = []
-		candidates = [[x.w1[time][1] if x.w1[time]!=None else None\
-					  ,x.w2[time][1] if x.w2[time]!=None else None\
-					  ,x.w3[time][1] if x.w3[time]!=None else None]\
-					   for x in areas_sorted]
+		candidates = [[wait[time][1] if wait[time]!=None else None \
+					  for wait in area.w] for area in areas]
 		used_content = set()
 		for area,cands in zip(areas_sorted,candidates):
 			cands.sort(cmp = lambda x,y:cmp(y,x))
@@ -194,7 +195,7 @@ class Schedule_solution():
 			cont = ran.choice(contents_copy)
 			i = 0
 			while True:
-				ran_waiting = 'w'+ str(ran.randint(1,3))
+				ran_waiting = ran.randint(0,2)
 				ran_start = ran.randint(0,19)
 				if sol.checkAddContent(ran_waiting,ran_start,cont):
 					sol.addContent(ran_waiting,ran_start,cont)
@@ -230,15 +231,11 @@ class Schedule_solution():
 			#print "cur_id,length,start",cur_id,content[1].length,start
 			flag = 0
 			for i in range(content[1].length):
-				if schedule.w1[start+i]!=None and \
-					schedule.w1[start+i][1].id == cur_id:
-					flag += 1
-				if schedule.w2[start+i]!=None and \
-					schedule.w2[start+i][1].id == cur_id:
-					flag += 1
-				if schedule.w3[start+i]!=None and \
-					schedule.w3[start+i][1].id == cur_id:
-					flag += 1
+				for j in range(len(schedule.w)):
+					#print start,i,content[1]
+					if schedule.w[j][start+i]!=None and \
+						schedule.w[j][start+i][1].id == cur_id:
+						flag += 1
 			if flag != content[1].length:
 				#print "col not valid",flag,content[1].length,cur_id
 				return False
@@ -252,36 +249,18 @@ class Schedule_solution():
 				return False
 
 		i = 0
-		while i < len(schedule.w1):
-			c = schedule.w1[i]
-			if c != None:
-				if not validRowCol(c,i,schedule.w1,schedule):
-					return False
+		while i < len(schedule.w):
+			j = 0
+			while j < len(schedule.w[i]):
+				c = schedule.w[i][j]
+				if c != None:
+					if not validRowCol(c,j,schedule.w[i],schedule):
+						return False
+					else:
+						j += c[1].length
 				else:
-					i += c[1].length
-			else:
-				i += 1
-		i = 0
-		while i < len(schedule.w2):
-			c = schedule.w2[i]
-			if c != None:
-				if not validRowCol(c,i,schedule.w2,schedule):
-					return False
-				else:
-					i += c[1].length
-			else:
-				i += 1
-		i = 0
-		while i < len(schedule.w3):
-			c = schedule.w3[i]
-			if c != None:
-				if not validRowCol(c,i,schedule.w3,schedule):
-					return False
-				else:
-					i += c[1].length
-			else:
-				i += 1
-	    			
+					j += 1
+			i += 1
 		return True
 	
 	def schedule_localSearch(self,contents,areas):
@@ -304,33 +283,33 @@ def mainSelection():
 	c1__ = Content(1,3,20)
 	c8 = Content(8,6,10)
 	a1 = Area('a1',1.0)
-	a1.addContent('w1',0,c1)
-	a1.addContent('w1',6,c2)
-	a1.addContent('w1',12,c3)
-	a1.addContent('w1',18,c1_)
-	a1.addContent('w2',2,c5)
-	a1.addContent('w2',9,c6)
-	a1.addContent('w3',0,c7)
-	a1.addContent('w3',9,c1__)
-	a1.addContent('w3',14,c8)
+	a1.addContent(0,0,c1)
+	a1.addContent(0,6,c2)
+	a1.addContent(0,12,c3)
+	a1.addContent(0,18,c1_)
+	a1.addContent(1,2,c5)
+	a1.addContent(1,9,c6)
+	a1.addContent(2,0,c7)
+	a1.addContent(2,9,c1__)
+	a1.addContent(2,14,c8)
 	a1.printSchedule()
 	print "\n"
 	a2 = Area('a2',0.5)
-	a2.addContent('w1',0,c6)
-	a2.addContent('w1',11,c7)
-	a2.addContent('w2',0,c1)
-	a2.addContent('w2',6,c8)
-	a2.addContent('w2',15,c3)
-	a2.addContent('w3',0,c3)
-	a2.addContent('w3',7,c5)
-	a2.addContent('w3',13,c2)
-	a2.addContent('w3',19,c1_)
+	a2.addContent(0,0,c6)
+	a2.addContent(0,11,c7)
+	a2.addContent(1,0,c1)
+	a2.addContent(1,6,c8)
+	a2.addContent(1,15,c3)
+	a2.addContent(2,0,c3)
+	a2.addContent(2,7,c5)
+	a2.addContent(2,13,c2)
+	a2.addContent(2,19,c1_)
 	a2.printSchedule()
 	a3 = Area('a3',1.0)
 	a4 = Area('a4',0.9)
-	a3.addContent('w1',0,c2)
-	a3.addContent('w2',0,c5)
-	a4.addContent('w1',0,c2)
+	a3.addContent(0,0,c2)
+	a3.addContent(1,0,c5)
+	a4.addContent(0,0,c2)
 	sol_select = Selection_solution()
 	time_b = timeit.default_timer()
 	sol_select.select_bruteforce(time=12,a1=a1,a2=a2)
