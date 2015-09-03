@@ -1,0 +1,10 @@
+toy,cookie
+Shanghai	Shanghai	30	20	10
+Shanghai	Beijing	50	15	10
+Shanghai	Guangzhou	40	25	15
+Beijing	Shanghai	45	30	20
+Beijing	Beijing	25	20	15
+Beijing	Guangzhou	60	40	20
+Guangzhou	Shanghai	40	20	5
+Guangzhou	Beijing	100	30	10
+Guangzhou	Guangzhou	20	15	10	

@@ -9,27 +9,26 @@ class Order():
 		dest: destination of shipping
 		pro: product name
 		num: number of products
-		arrTime: required arrival time, datetime
 		time: time allowed to deliver the product, time = arrTime-orderTime
 	"""
-	def __init__(self,orderTime,dest,pro,num,arrTime):
+	def __init__(self,orderTime,dest,pro,num,time):
 		self.orderTime = orderTime
 		self.dest = dest
 		self.pro = pro
 		self.num = num
-		self.arrTime = arrTime
-		self.time = self.arrTime - self.orderTime
+		self.time = time
 
 class Shipping():
 	"""
 	Attributes:
 		product_shipping: a dict to store (product_name,shipping_info),shipping_info is a
-						  dict contains (time,matrix), which matrix is the delivery cost 
-						  table
+						  dict contains a matrix having delivery cost, each cell in the matrix
+						  is list having the cost from 1 day to 3 day
 	"""
 	def __init__(self):
 		self.product_shipping ={}
 	
 	def updateShipping(self,pro_list,shipping_info):
-		return dict(zip(pro_list,shipping_info))
+		self.product_shipping = dict(zip(pro_list,shipping_info))
+
 	
