@@ -3,11 +3,13 @@
 syntax on
 set nu
 set mouse=a
-set ai    " auto indent
-set si	  " smart indent
+"set ai    " auto indent
+"set si	  " smart indent
+filetype plugin indent on
 set tabstop=4  " the width of a Tab is set to 4
 set shiftwidth=4 " indents will have a width of 4
 set softtabstop=4 "sets the number of columns for a TAB
+set expandtab
 set laststatus=2 " show the current status
 
 
