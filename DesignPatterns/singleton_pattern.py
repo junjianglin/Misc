@@ -19,7 +19,8 @@ class Singleton():
     def __getattr__(self,name):
         return getattr(self.instance,name)
 
-
+    def __setattr__(self,name,value):
+        setattr(self.instance,name,value)
 if __name__ == '__main__':
     x = Singleton('sausage')
     print x
