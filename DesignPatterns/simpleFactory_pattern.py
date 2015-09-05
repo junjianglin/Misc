@@ -1,3 +1,5 @@
+#code are borrowed and modified from the book 'Design Patterns in Python ver0.1'
+
 class Person():
     """Person class
     Superclass of Male and Female

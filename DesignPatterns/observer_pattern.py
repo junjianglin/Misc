@@ -1,3 +1,5 @@
+#code are borrowed and modified from the book 'Design Patterns in Python ver0.1'
+
 class Publisher():
     """Abstract class: Subject
     methods:

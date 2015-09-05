@@ -1,3 +1,4 @@
+# code is borrowed and modified from the book 'python 3 patterns idioms'
 class Singleton():
     #use private inner class to delegate a single instance
     class __OnlyOne:

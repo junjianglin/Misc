@@ -1,3 +1,4 @@
+#code are borrowed and modified from the book 'Design Patterns in Python ver0.1'
 import time
 
 class TC1():
