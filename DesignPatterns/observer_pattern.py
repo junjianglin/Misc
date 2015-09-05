@@ -1,4 +1,11 @@
 class Publisher():
+    """Abstract class: Subject
+    methods:
+        __init__
+        regiester()
+        unregister()
+        notifyAll()
+    """
     def __init__(self):
         pass
 
@@ -12,6 +19,17 @@ class Publisher():
         pass
 
 class Forum(Publisher):
+    """Concrete Subject class
+    Attributes:
+        __listOfObservers
+        updateItem
+    methods:
+        __init__
+        register()
+        unregister()
+        notifyAll()
+        update()
+    """
     def __init__(self):
         self.__listOfUsers = []
         self.postname = None
@@ -33,6 +51,11 @@ class Forum(Publisher):
         self.notifyAll()
 
 class Observer:
+    """Abstract Observer class
+    methods:
+        __init__
+        notify()
+    """
     def __init__(self):
         pass
 
@@ -40,6 +63,10 @@ class Observer:
         pass
 
 class User1(Observer):
+    """Concrete Observer class
+    methods:
+        notify(update_item)
+    """
     def notify(self,postname):
         print "User1 notified a new post {}".format(postname)
 
@@ -48,6 +75,10 @@ class User2(Observer):
         print "User2 notified a new post {}".format(postname)
 
 class Factory():
+    """ Factory class using factory design pattern
+    methods:
+        getUser(ID)
+    """
     def getUser(self,num):
         if num == 1:
             return User1()

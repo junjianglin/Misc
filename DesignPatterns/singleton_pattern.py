@@ -1,33 +1,30 @@
 class Singleton():
-    #inner class
+    #use private inner class to delegate a single instance
     class __OnlyOne:
-        def __init__(self):
-            self.val = None
+        def __init__(self,val):
+            self.val = val
         def __str__(self):
             return  repr(self)+ self.val
 
     instance = None
 
-    def __init__(self):
+    def __init__(self,val):
         if Singleton.instance is None:
-            Singleton.instance = Singleton.__OnlyOne()
+            Singleton.instance = Singleton.__OnlyOne(val)
+        else:
+            Singleton.instance.val = val
 
     #delegate access to inner class implementation
     def __getattr__(self,name):
         return getattr(self.instance,name)
-    def __setattr__(self,name,value):
-        return setattr(self.instance,name,value)
 
 
 if __name__ == '__main__':
-    x = Singleton()
-    x.val = 'sausage'
+    x = Singleton('sausage')
     print x
-    y = Singleton()
-    y.val = 'eggs'
+    y = Singleton('eggs')
     print y
-    z = Singleton()
-    z.val = 'spam'
+    z = Singleton('spam')
     print z
 
     print x
