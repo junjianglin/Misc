@@ -2,3 +2,9 @@ Order_time	destination	product	number time
 2015:1:23	Beijing	toy	3	2
 2015:2:12	Shanghai	cookie	2	1
 2015:3:10	Guangzhou	toy	1	3
+2015:2:20   Guangzhou   cookie  5   3
+2015:1:31   Shanghai    toy 8   2
+2015:2:17   Beijing cookie  3   1
+2015:4:05   Shanghai    toy 8   2
+2015:4:02   Beijing cookie  2   3
+2015:1:20   Shanghai    cookie  4   2
