@@ -1,0 +1,10 @@
+wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+chmod 775 Miniconda-latest-Linux-x86_64.sh
+...
+...
+...
+conda install numpy
+conda install scipy
+conda install scikit-learn
+conda install ipython
+
