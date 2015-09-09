@@ -7,4 +7,4 @@ conda install numpy
 conda install scipy
 conda install scikit-learn
 conda install ipython
-
+conda install -c https://conda.binstar.org/auto epydoc
