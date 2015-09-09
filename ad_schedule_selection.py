@@ -3,16 +3,16 @@
 class Area():
 	"""
 	Attributes:
-		weight: the multiplier of this area
-		id: unique id
-		w: content candidates, a list with 3 lists
+	    weight: the multiplier of this area
+	    id: unique id
+	    w: content candidates, a list with 3 lists
 	"""
 	def __init__(self,id,weight):
 		self.weight = weight
 		self.id = id
 		#this design is not suitable, store w1,w2,w3 in a list called wait
 		self.w = [[None]*20 for _ in range(3)]
-	
+
 	def addContent(self,wait,start,content):
 		if self.checkAddContent(wait,start,content):
 			for i in range(content.length):
@@ -50,10 +50,10 @@ class Area():
 					w_print += 'NO'
 				w_print += " "
 			print w_print
-	
+
 	def __cmp__(self,o):
 		return cmp(self.weight,o.weight)
-	
+
 	def __repr__(self):
 		return self.id
 
@@ -62,13 +62,13 @@ class Content():
 		self.id = id
 		self.length = length
 		self.value = value
-		
+
 	def __cmp__(self,o):
 		if o != None:
 			return cmp(self.value,o.value)
 		else:
 			return cmp(self.value,0)
-	
+
 	def __eq__(self,other):
 		if other != None:
 			return self.id==other.id and \
@@ -76,7 +76,7 @@ class Content():
 				   self.value==other.value
 		else:
 			return False
-	
+
 	def __repr__(self):
 		return 'c'+str(self.id)
 
@@ -84,10 +84,10 @@ class Selection_solution():
 	def select_bruteforce(self,time,a1,a2,*args):
 		"""Combinatorial search algorithm,
 			Given area1, and area2 ...and a given time,
-			return a selection, which maximize total 
+			return a selection, which maximize total
 			weights, O(n^k), k is the number of areas, n is the					   the number of waiting contents in each areas in one time
 			Algo:
-			Backtrack to generate all solution and compare with 
+			Backtrack to generate all solution and compare with
 			current best solution, if it is better, replace current
 			best with new one
 		"""
@@ -110,7 +110,7 @@ class Selection_solution():
 	def calculateCost(self,sol,weights):
 		return sum([x.value*y if x != None else 0 \
 					for x,y in zip(sol,weights)])
-	
+
 	def backtrack(self,a,k,input,best):
 		if k == len(input[0])-1:
 			best_cost = self.calculateCost(best,input[1])
@@ -134,15 +134,15 @@ class Selection_solution():
 			for i in range(ncandidates):
 				a[k] = c[i]
 				self.backtrack(a,k,input,best)
-	
+
 	def select_greedy(self,time,a1,a2,*args):
 		"""greedy algorithm, take the most weight area first, and
-		   give it most valuable content, then second area, and 
+		   give it most valuable content, then second area, and
 		   so on , O(klogk + knlogn), not optimal, but efficient
 		   Algo:
 		   sort area by their weight in descreasing order, and choose
 		   the most valuable content in the area, and then second area
-		   ,keep checking whether the content have been selected by 
+		   ,keep checking whether the content have been selected by
 		   previous area
 		"""
 		areas = []
@@ -173,9 +173,9 @@ class Schedule_solution():
 	def schedule_randomSampling(self,contents,areas):
 		""" random Sampling method, or Monte Carlo
 			Algo: Generating random result first, and
-				  then check whether it is valid, if not
-				  valid, re-generate a random one, until
-				  it is valid.
+			    then check whether it is valid, if not
+			    valid, re-generate a random one, until
+			    it is valid.
 		"""
 		solutions = []
 		for i in range(len(areas)):
@@ -213,7 +213,7 @@ class Schedule_solution():
 					break
 		#print "generate new schedule\n",sol.printSchedule()
 		return sol
-	
+
 	def validSchedule(self,schedule):
 		def validRow(content,start,row):
 			cur_id = content[1].id
@@ -266,13 +266,13 @@ class Schedule_solution():
 					j += 1
 			i += 1
 		return True,None
-	
+
 	def schedule_localSearch(self,contents,areas):
 		""" local greedy search
 		Algo: randomly generate a schedule, if not valid,
-			  find the content that result in invalid, and switch it
-			  with other random content, check whether it is valid 
-			  again, until we get a valid one
+		    find the content that result in invalid, and switch it
+		    with other random content, check whether it is valid
+		    again, until we get a valid one
 		"""
 		solutions = []
 		for i in range(len(areas)):
@@ -292,9 +292,9 @@ class Schedule_solution():
 						schedule = self.randomSchedule(contents)
 		for sol in solutions:
 			sol.printSchedule()
-	
+
 	def transition(self,schedule):
-		""" use validSchedule to find the problematic content, 
+		""" use validSchedule to find the problematic content,
 			and switch it with another random content
 		"""
 		c_p = self.validSchedule(schedule)[1]
@@ -340,7 +340,7 @@ class Schedule_solution():
 					j += schedule.w[i][j][1].length
 		return schedule
 
-				
+
 def mainSelection():
 	import timeit
 	c1 = Content(1,4,20)
@@ -425,5 +425,5 @@ def mainSchedule():
 if __name__ == '__main__':
 	#mainSelection()
 	mainSchedule()
-	
+
 

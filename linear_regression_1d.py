@@ -1,10 +1,10 @@
 def fit(X, Y):
     """ Fitting the line according the data X and Y
     Args:
-	    X: predictor variable
-	    Y: reponse variable
+	X: predictor variable
+	Y: reponse variable
     Returns:
-	    line(x): A closure to predict reponse given new data x
+	line(x): A closure to predict reponse given new data x
     """
     import math
     def mean(Xs):
