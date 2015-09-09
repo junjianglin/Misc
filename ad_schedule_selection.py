@@ -1,5 +1,6 @@
-# Online ad scheduling problem, selection part, details please see the group interview guide.
-
+"""
+Online ad scheduling problem, selection part, details please see the group interview guide.
+"""
 class Area():
 	"""
 	Attributes:

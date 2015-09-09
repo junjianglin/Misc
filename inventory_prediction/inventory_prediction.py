@@ -206,6 +206,15 @@ class Controller():
 
         return round(float(sum(data[1])/len(data[1])),0)
 
+    def predictProductByNumpyLinear(self,data,pred_month):
+        """predict regression value by linear regression from
+        numpy/scipy/scikit-learn package
+        """
+        pass
+
+    def predictProductByKNN(self,data,pred,pred_month):
+        pass
+
     def predictProduct(self,data,pred_month):
         """predict Product using 1-d linear regression"""
         try:
