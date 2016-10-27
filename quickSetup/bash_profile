@@ -1,0 +1,58 @@
+#Setting up some aliases
+alias bre="brazil-runtime-exec"
+alias bws="brazil ws"
+alias c='ssh junjiang@junjiang.aka.amazon.com'
+alias cx='ssh -X junjiang@junjiang.aka.amazon.com'
+alias sandbox2='ssh inventory-placement-sandbox-6001.iad6.amazon.com'
+alias sandbox1='ssh inventory-placement-sandbox-71006.iad55.amazon.com'
+alias sandbox3='ssh inventory-placement-sandbox-6002.iad6.amazon.com'
+alias sandboxeu1='ssh inventory-allocation-estimator-sandbox-eu-14001.dub4.amazon.com'
+alias sandbox1x='ssh -X inventory-placement-sandbox-71006.iad55.amazon.com'
+alias prodna1='ssh inventory-allocation-estimator-na-7003.iad7.amazon.com'
+alias prodeu1='ssh inventory-allocation-estimator-eu-12002.dub2.amazon.com'
+alias prodeu2='ssh inventory-allocation-estimator-eu-12003.dub2.amazon.com'
+alias prodna1x='ssh -X inventory-allocation-estimator-na-7003.iad7.amazon.com'
+alias prodfe1='ssh inventory-allocation-estimator-fe-60003.pdx1.amazon.com'
+alias bb='brazil-build'
+alias eclipse="/Applications/Eclipse.app/Contents/MacOS/eclipse"
+alias ninja="ninja-dev-sync"
+#setting PATH
+export PATH="/apollo/env/SDETools/bin:$PATH"
+export PATH="/home/junjiang/anaconda/bin:$PATH"
+ 
+#Make SDETools use a simplified directory structure for organizing source code.  
+export BRAZIL_WORKSPACE_DEFAULT_LAYOUT=short 
+#setting default editor
+export EDITOR=vim 
+#making terminal more colorful
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+# added by Anaconda2 4.0.0 installer
+export PATH="/Users/junjiang/anaconda/bin:$PATH"
+
+
+# Enable tab completion
+source ~/MISC/Git_workspaceSetup/git-completion.bash
+
+#Enable GordianKnot
+source ~/MISC/Tools/create-gk-aliases.sh
+
+# colors!
+green="\[\033[0;32m\]"
+blue="\[\033[0;34m\]"
+purple="\[\033[0;35m\]"
+reset="\[\033[0m\]"
+red="\[\033[0;31m]"
+
+# Change command prompt
+source ~/MISC/Git_workspaceSetup/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+# '\u' adds the name of the current user to the prompt
+# '\$(__git_ps1)' adds git-related stuff
+# '\W' adds the name of the current directory
+export PS1="$purple\u$green\$(__git_ps1)$red \W $ $reset"
+
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
