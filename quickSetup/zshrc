@@ -1,0 +1,97 @@
+
+#Setting database region
+SOK_DB="sok-db-eu"
+
+#Add ninja-dev-sync protector
+if [[ -d /workplace/$USER ]]; then
+    alias git='ninja-dev-sync-protector /apollo/env/SDETools/bin/git'
+    alias post-review='ninja-dev-sync-protector /apollo/env/SDETools/bin/post-review'
+fi
+
+#
+# .zshrc is sourced in interactive shells.
+# It should contain commands to set up aliases,
+# functions, options, key bindings, etc.
+#
+
+if [ -f /apollo/env/envImprovement/var/zshrc ] ; then
+  source /apollo/env/envImprovement/var/zshrc
+  # I don't like the envImprovement .screenrc
+  unset SCREENRC
+
+  if [ -h /apollo/env/SokobanTools ] ; then
+    source /apollo/env/SokobanTools/bin/sokoban.inc
+  fi
+fi
+
+mkdir -p /home/$USER/.zsh/completion
+# refresh your local copy in case it changes
+cp /apollo/env/SokobanTools/configuration/zsh-completion/* /home/$USER/.zsh/completion
+fpath=(/home/$USER/.zsh/completion $fpath)
+
+if [ -f /home/$USER/.aliases ] ; then
+  source /home/$USER/.aliases
+fi
+
+autoload -U compinit
+compinit
+
+#allow tab completion in the middle of a word
+setopt COMPLETE_IN_WORD
+
+## keep background processes at full speed
+#setopt NOBGNICE
+## restart running processes on exit
+#setopt HUP
+
+## history
+setopt APPEND_HISTORY
+## for sharing history between zsh processes
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+
+## never ever beep ever
+setopt NO_BEEP
+
+# allow escaped single quotes inside single quotes, because 'its very useful'
+setopt RC_QUOTES
+
+# fix terminal colors
+autoload colors zsh/terminfo
+if [[ "$terminfo[colors]" -ge 8 ]]; then
+  colors
+fi
+
+# fix home/end keys
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[3~" delete-char
+bindkey "^[[4~" end-of-line
+
+bindkey "^[OH" beginning-of-line
+bindkey "^[OF" end-of-line
+
+## automatically decide when to page a list of completions
+#LISTMAX=0
+
+## disable mail checking
+#MAILCHECK=0
+
+alias dir='ls -ahl'
+EDITOR=vim
+
+# I don't like the way RPROMPT contaminates copies from screen.
+unset RPROMPT
+
+# change colors
+d=~/MISC/thirdPartyTools/dircolors.256dark
+test -r $d && eval "$(dircolors $d)"
+zstyle ':completion:*' list-colors ''
+
+export PATH="$PATH:/apollo/env/SDETools/bin"
+export PATH="$PATH:/home/junjiang/anaconda2/bin"
+export PATH="$PATH:/eclipse"
+export BRAZIL_WORKSPACE_DEFAULT_LAYOUT=short
+export PATH="$PATH:/home/junjiang/MISC/homemadeTools"
+export PATH="$PATH:/apollo/env/SokobanTools/bin"
+export PATH="$PATH:/apollo/env/GordianKnot/bin"
+export PATH="$PATH:/apollo/env/NovitasTools/bin"
