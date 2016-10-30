@@ -96,7 +96,7 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 # '@%m' adds the name of current host
 # '$(__git_ps1)' adds git-related stuff
 # '%c' adds the name of the current directory
-setopt PROMPT_SUBST ; PS1='[$fg[cyan]%n$fg[cyan]@%m$fg[green]$(__git_ps1)] $fg[red]%c $ $reset_color'
+setopt PROMPT_SUBST ; PS1='$fg[green][$fg[cyan]%n$fg[cyan]@%m$fg[green]$(__git_ps1)] $fg[red]%c $ $reset_color'
 
 export GREP_OPTIONS='--color=always'
 

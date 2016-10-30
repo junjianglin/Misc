@@ -41,7 +41,7 @@ green="\[\033[0;32m\]"
 blue="\[\033[0;34m\]"
 purple="\[\033[0;35m\]"
 reset="\[\033[0m\]"
-red="\[\033[0;31m]"
+red="\[\033[0;31m\]"
 
 # Change command prompt
 source ~/MISC/Git_workspaceSetup/git-prompt.sh
@@ -49,7 +49,7 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 # '\u' adds the name of the current user to the prompt
 # '\$(__git_ps1)' adds git-related stuff
 # '\W' adds the name of the current directory
-export PS1="$purple\u$green\$(__git_ps1)$red \W $ $reset"
+export PS1="$green[$purple\u$green\$(__git_ps1)] $red\W $ $reset"
 
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
