@@ -16,10 +16,11 @@ alias prodfe1='ssh inventory-allocation-estimator-fe-60003.pdx1.amazon.com'
 alias bb='brazil-build'
 alias eclipse="/Applications/Eclipse.app/Contents/MacOS/eclipse"
 alias ninja="ninja-dev-sync"
+alias ll="ls -ltrh"
 #setting PATH
 export PATH="/apollo/env/SDETools/bin:$PATH"
 export PATH="/home/junjiang/anaconda/bin:$PATH"
- 
+export PATH="$HOME/MISC/Tools:$PATH" 
 #Make SDETools use a simplified directory structure for organizing source code.  
 export BRAZIL_WORKSPACE_DEFAULT_LAYOUT=short 
 #setting default editor
@@ -27,15 +28,13 @@ export EDITOR=vim
 #making terminal more colorful
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
+export GREP_OPTIONS='--color=always'
 # added by Anaconda2 4.0.0 installer
 export PATH="/Users/junjiang/anaconda/bin:$PATH"
 
 
 # Enable tab completion
 source ~/MISC/Git_workspaceSetup/git-completion.bash
-
-#Enable GordianKnot
-source ~/MISC/Tools/create-gk-aliases.sh
 
 # colors!
 green="\[\033[0;32m\]"

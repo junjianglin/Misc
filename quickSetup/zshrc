@@ -87,6 +87,19 @@ d=~/MISC/thirdPartyTools/dircolors.256dark
 test -r $d && eval "$(dircolors $d)"
 zstyle ':completion:*' list-colors ''
 
+# Git setup
+zstyle ':completion:*:*:git:*' script $HOME/MISC/homemadeTools/git-completion.zsh
+source $HOME/MISC/homemadeTools/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+# $fg[color]  add color to the responding option
+# '%n' adds the name of the current user to the prompt
+# '@%m' adds the name of current host
+# '$(__git_ps1)' adds git-related stuff
+# '%c' adds the name of the current directory
+setopt PROMPT_SUBST ; PS1='[$fg[cyan]%n$fg[cyan]@%m$fg[green]$(__git_ps1)] $fg[red]%c $ $reset_color'
+
+export GREP_OPTIONS='--color=always'
+
 export PATH="$PATH:/apollo/env/SDETools/bin"
 export PATH="$PATH:/home/junjiang/anaconda2/bin"
 export PATH="$PATH:/eclipse"
