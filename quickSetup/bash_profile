@@ -1,29 +1,9 @@
 #Setting up some aliases
-alias bre="brazil-runtime-exec"
-alias bws="brazil ws"
-alias c='ssh junjiang@junjiang.aka.amazon.com'
-alias cx='ssh -X junjiang@junjiang.aka.amazon.com'
-alias sandbox2='ssh inventory-placement-sandbox-6001.iad6.amazon.com'
-alias sandbox1='ssh inventory-placement-sandbox-71006.iad55.amazon.com'
-alias sandbox3='ssh inventory-placement-sandbox-6002.iad6.amazon.com'
-alias sandboxeu1='ssh inventory-allocation-estimator-sandbox-eu-14001.dub4.amazon.com'
-alias sandbox1x='ssh -X inventory-placement-sandbox-71006.iad55.amazon.com'
-alias prodna1='ssh inventory-allocation-estimator-na-7003.iad7.amazon.com'
-alias prodeu1='ssh inventory-allocation-estimator-eu-12002.dub2.amazon.com'
-alias prodeu2='ssh inventory-allocation-estimator-eu-12003.dub2.amazon.com'
-alias prodna1x='ssh -X inventory-allocation-estimator-na-7003.iad7.amazon.com'
-alias prodfe1='ssh inventory-allocation-estimator-fe-60003.pdx1.amazon.com'
-alias bb='brazil-build'
-alias eclipse="/Applications/Eclipse.app/Contents/MacOS/eclipse"
-alias ninja="ninja-dev-sync"
+
 alias ll="ls -ltrh"
 #setting PATH
-export PATH="/apollo/env/SDETools/bin:$PATH"
-export PATH="/home/junjiang/anaconda/bin:$PATH"
-export PATH="$HOME/MISC/Tools:$PATH" 
-#Make SDETools use a simplified directory structure for organizing source code.  
-export BRAZIL_WORKSPACE_DEFAULT_LAYOUT=short 
-#setting default editor
+
+
 export EDITOR=vim 
 #making terminal more colorful
 export CLICOLOR=1
@@ -52,6 +32,9 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 export PS1="$green[$purple\u$green\$(__git_ps1)] $red\W $ $reset"
 
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+source ~/.bashrc
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# show directory in tab
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"'
